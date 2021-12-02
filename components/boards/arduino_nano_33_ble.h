@@ -66,21 +66,21 @@ extern "C" {
 
 #define BUTTONS_ACTIVE_STATE 0
 
-#define RX_PIN_NUMBER  42
-#define TX_PIN_NUMBER  35
+#define RX_PIN_NUMBER  (32 * 1 + 10)
+#define TX_PIN_NUMBER  (32 * 1 + 3)
 #define CTS_PIN_NUMBER UART_PIN_DISCONNECTED
 #define RTS_PIN_NUMBER UART_PIN_DISCONNECTED
 #define HWFC           false
 
 // Arduino board mappings
-#define ARDUINO_SCL_PIN              9    // SCL signal pin
-#define ARDUINO_SDA_PIN              8    // SDA signal pin
-#define ARDUINO_AREF_PIN             3     // Aref pin
+#define ARDUINO_SCL_PIN              2    // SCL signal pin
+#define ARDUINO_SDA_PIN             31    // I2C SDA signal pin
+#define ARDUINO_AREF_PIN             3    // Aref pin
 
 //digital pins
-#define ARDUINO_13_PIN              25    // SCK, pin number not sure
-#define ARDUINO_12_PIN              30    // MISO
-#define ARDUINO_11_PIN              29    // MOSI
+#define ARDUINO_13_PIN              13    // SPI SCK
+#define ARDUINO_12_PIN              40    // SPI MISO
+#define ARDUINO_11_PIN              33    // SPI MOSI
 #define ARDUINO_10_PIN              22    // CS, pin number not sure
 #define ARDUINO_9_PIN               20    // IFX I2C VDD, pin number not sure
 #define ARDUINO_8_PIN               19    // not sure

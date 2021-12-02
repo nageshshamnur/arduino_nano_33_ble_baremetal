@@ -4,11 +4,9 @@ MEMORY
   RAM_NVIC (rwx) : ORIGIN = 0x20000000, LENGTH = 0x100
   RAM_CRASH_DATA (rwx) : ORIGIN = (0x20000000 + 0x100), LENGTH = 0x100
   RAM (rwx) : ORIGIN = ((0x20000000 + 0x100) + 0x100), LENGTH = (0x40000 - (0x100 + 0x100))
-  RAM_STACK(rwx): ORIGIN = (0x20000000 + 0x40000) - 0x400, LENGTH = 0x400
 }
 OUTPUT_FORMAT ("elf32-littlearm", "elf32-bigarm", "elf32-littlearm")
 ENTRY(Reset_Handler)
-
 SECTIONS
 {
     .text :
@@ -97,14 +95,14 @@ SECTIONS
         *(.jcr)
         . = ALIGN(8);
         __data_end__ = .;
-    } > RAM 
+    } > RAM
     __edata = .;
     .nvictable (NOLOAD) :
     {
       PROVIDE(__start_nvictable = .);
       KEEP(*(.nvictable))
       PROVIDE(__stop_nvictable = .);
-    } > RAM_NVIC AT > RAM
+    } > RAM_NVIC
     .crash_data_ram :
     {
       . = ALIGN(8);
@@ -115,7 +113,7 @@ SECTIONS
       . += 0x100;
       . = ALIGN(8);
       __CRASH_DATA_RAM_END__ = .;
-    } > RAM_CRASH_DATA AT > RAM
+    } > RAM_CRASH_DATA
     .noinit (NOLOAD) :
     {
       PROVIDE(__start_noinit = .);
@@ -141,13 +139,13 @@ SECTIONS
     } > RAM
     PROVIDE(__heap_start = ADDR(.heap));
     PROVIDE(__heap_size = SIZEOF(.heap));
-    PROVIDE(__mbed_sbrk_start = ADDR(.heap));
-    PROVIDE(__mbed_krbs_start = ADDR(.heap) + SIZEOF(.heap));
     .stack (NOLOAD):
     {
         __StackLimit = .;
         *(.stack*)
-    } > RAM_STACK
+        . = ORIGIN(RAM) + LENGTH(RAM);
+    } > RAM
     __StackTop = ORIGIN(RAM) + LENGTH(RAM);
+    __StackLimit = __StackTop - 0x400;
     PROVIDE(__stack = __StackTop);
 }

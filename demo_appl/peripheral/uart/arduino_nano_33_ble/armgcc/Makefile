@@ -6,7 +6,7 @@ SDK_ROOT := ../../../../..
 PROJ_DIR := ../..
 
 $(OUTPUT_DIRECTORY)/nrf52840_xxaa.out: \
-  LINKER_SCRIPT  := Liteos.ld
+  LINKER_SCRIPT  := linker_script.ld
 
 # Source files common to all targets
 SRC_FILES += \
@@ -79,11 +79,12 @@ CFLAGS += $(OPT)
 CFLAGS += -DBOARD_ARDUINO_NANO_33_BLE
 CFLAGS += -DBSP_DEFINES_ONLY
 CFLAGS += -DCONFIG_GPIO_AS_PINRESET
-CFLAGS += -DFLOAT_ABI_HARD
 CFLAGS += -DNRF52840_XXAA
+CFLAGS += -std=gnu11
 CFLAGS += -mcpu=cortex-m4
-CFLAGS += -mthumb -mabi=aapcs
+CFLAGS += -mthumb
 CFLAGS += -Wall -Werror
+CFLAGS += -Wno-missing-field-initializers
 CFLAGS += -mfloat-abi=softfp -mfpu=fpv4-sp-d16
 # keep every function in a separate section, this allows linker to discard unused ones
 CFLAGS += -ffunction-sections -fdata-sections -fno-strict-aliasing
@@ -94,7 +95,7 @@ CXXFLAGS += $(OPT)
 # Assembler flags common to all targets
 ASMFLAGS += -g3
 ASMFLAGS += -mcpu=cortex-m4
-ASMFLAGS += -mthumb -mabi=aapcs
+ASMFLAGS += -mthumb
 ASMFLAGS += -mfloat-abi=softfp -mfpu=fpv4-sp-d16
 ASMFLAGS += -DBOARD_ARDUINO_NANO_33_BLE
 ASMFLAGS += -DBSP_DEFINES_ONLY
@@ -104,7 +105,7 @@ ASMFLAGS += -DNRF52840_XXAA
 
 # Linker flags
 LDFLAGS += $(OPT)
-LDFLAGS += -mthumb -mabi=aapcs -L$(SDK_ROOT)/modules/nrfx/mdk -T$(LINKER_SCRIPT)
+LDFLAGS += -mthumb -L$(SDK_ROOT)/modules/nrfx/mdk -T$(LINKER_SCRIPT)
 LDFLAGS += -mcpu=cortex-m4
 LDFLAGS += -mfloat-abi=softfp -mfpu=fpv4-sp-d16
 # let linker dump unused sections
