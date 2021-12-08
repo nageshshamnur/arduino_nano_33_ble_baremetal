@@ -30,15 +30,6 @@ NOTICE: This file has been modified by Nordic Semiconductor ASA.
 #endif
 #endif
 
-.extern HalExcNMI;
-.extern HalExcHardFault;
-.extern HalExcMemFault;
-.extern HalExcBusFault;
-.extern HalExcUsageFault;
-.extern HalExcSvcCall;
-.extern HalPendSV;
-.extern OsTickHandler;
-
     .section .stack
 #if defined(__STARTUP_CONFIG)
     .align __STARTUP_CONFIG_STACK_ALIGNEMENT
@@ -83,20 +74,20 @@ __HeapLimit:
 __isr_vector:
     .long   __StackTop                  /* Top of Stack */
     .long   Reset_Handler
-    .long   HalExcNMI
-    .long   HalExcHardFault
-    .long   HalExcMemFault
-    .long   HalExcBusFault
-    .long   HalExcUsageFault
+    .long   NMI_Handler
+    .long   HardFault_Handler
+    .long   MemoryManagement_Handler
+    .long   BusFault_Handler
+    .long   UsageFault_Handler
     .long   0                           /*Reserved */
     .long   0                           /*Reserved */
     .long   0                           /*Reserved */
     .long   0                           /*Reserved */
-    .long   HalExcSvcCall
+    .long   SVC_Handler
     .long   DebugMon_Handler
     .long   0                           /*Reserved */
-    .long   HalPendSV
-    .long   OsTickHandler
+    .long   PendSV_Handler
+    .long   SysTick_Handler
 
   /* External Interrupts */
     .long   POWER_CLOCK_IRQHandler
@@ -353,11 +344,13 @@ PendSV_Handler:
     b       .
     .size   PendSV_Handler, . - PendSV_Handler
 
+
     .weak   SysTick_Handler
     .type   SysTick_Handler, %function
 SysTick_Handler:
     b       .
     .size   SysTick_Handler, . - SysTick_Handler
+
 
 /* IRQ Handlers */
 
